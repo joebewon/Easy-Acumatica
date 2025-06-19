@@ -1,0 +1,6 @@
+# Local Directories
+node_modules
+dist
+run
+.vscode
+src/core/AcumaticaAPI-Auto.cts
