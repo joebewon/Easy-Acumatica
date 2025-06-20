@@ -17,11 +17,13 @@ export class QueryOptions {
             throw new Error("Both options.$top and options.$skip must be integers.");
         }
         
-        this.params.$filter = options.$filter.toString();
-        this.params.$top = options.$top;
-        this.params.$skip = options.$skip;
-        this.params.$expand = options.$expand?.join(',');
-        this.params.$select = options.$select?.join(','); 
+        this.params = {
+            $filter: options.$filter?.toString(),
+            $top: options.$top,
+            $skip: options.$skip,
+            $expand: options.$expand?.join(','),
+            $select: options.$select?.join(',')
+        };
     }
 
     /**
@@ -33,7 +35,7 @@ export class QueryOptions {
     public build(url: string = ""): string {
         let param_list: string[] = [];
         for (let [key, value] of Object.entries(this.params)) {
-            param_list.push(`${key}=${value}`);
+            if (key !== undefined && value !== undefined) param_list.push(`${key}=${value}`);
         }
 
         return `${url}?${param_list.join('&')}`;

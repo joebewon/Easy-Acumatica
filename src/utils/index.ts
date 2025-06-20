@@ -1,8 +1,8 @@
-// export * from './AcumaticaError.cts';
+// export * from './AcumaticaError';
 
-export * from './Filter.cts';
-export * from './QueryOptions.cts';
+export * from './Filter';
+export * from './QueryOptions';
 
-export * from './DateBuilder.cts';
-// export * from './MathBuilder.cts';
-// export * from './StringBuilder.cts';
+export * from './DateBuilder';
+// export * from './MathBuilder';
+// export * from './StringBuilder';

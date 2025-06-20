@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { QueryOptions } from '../utils/QueryOptions.cts';
+import { QueryOptions } from '../utils/QueryOptions';
 import { AcumaticaConfig } from '../types';
 
 /**
@@ -49,28 +49,32 @@ export class EasyAcumatica {
   /**
    * Creates an instance of AcumaticaAPI.
    *
-   * @param { AcumaticaConfig } config `AcumaticaConfig` An Acumatica Config object literal containing your connection information and credentials.
+   * @param { string } base_url `string` Base URL of the Acumatica instance.
+   * @param { string } username `string` Username for authentication.
+   * @param { string } password `string` Password for authentication.
+   * @param { string } tenant `string` Tenant name.
+   * @param { string } branch `string` (Optional) Branch name.
    * @param { function } create_gi_url `function` (Optional) A function to show this instance how to create the Generic Inquiry Endpoint URL. The string must end with "/", do not include the Inquiry Name, and not all parameters in `@config` need to be used.
    */
-  constructor(config: AcumaticaConfig, create_gi_url?: (config: AcumaticaConfig) => string) {
+  constructor(base_url: string, username: string, password: string, tenant: string, branch?: string, create_gi_url?: (config: AcumaticaConfig) => string) {
     this.full_config = {
-      base_url: config.base_url,
-      username: config.username,
-      password: config.password,
-      tenant: config.tenant,
-      branch: config.branch
+      base_url: base_url,
+      username: username,
+      password: password,
+      tenant: tenant,
+      branch: branch
     }
     
     this.auth = {
-      name: config.username,
-      password: config.password,
-      tenant: config.tenant,
-      branch: config.branch
+      name: username,
+      password: password,
+      tenant: tenant,
+      branch: branch
     };
     
     this.basic_auth = {
-      username: config.username,
-      password: config.password
+      username: username,
+      password: password
     };
     
     this.config = {

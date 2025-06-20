@@ -1,5 +1,5 @@
-import { MathBuilder } from "./MathBuilder.cts";
-import { StringBuilder } from "./StringBuilder.cts";
+import { MathBuilder } from "./MathBuilder";
+import { StringBuilder } from "./StringBuilder";
 
 export class Filter {
     public expr: string;
@@ -74,6 +74,3 @@ export class Filter {
         return `'${val.replaceAll("'", "\\'").replace('"', '\\"')}'`;
     }   
 }
-
-const flt: Filter = Filter.gt("Price", "5").and(Filter.substringOf("Name", "Joe")).or(Filter.not(Filter.lt("Cost2", new String("Sold"))).or(Filter.endsWith("Name", "Habi")));
-console.log(flt.toString());

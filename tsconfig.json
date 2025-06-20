@@ -2,11 +2,13 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "commonjs",
-    "outDir": "out",
-    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "dist",
     "lib": ["ES2021", "DOM"],
+    "sourceMap": true,
     "esModuleInterop": true,
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
-  }
+    "declaration": true
+  },
+  "include": ["src"],
+  "exclude": ["run", "dist", "node_modules"]
 }
