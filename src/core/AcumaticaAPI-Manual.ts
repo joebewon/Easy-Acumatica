@@ -4,24 +4,37 @@ import { QueryOptions } from '../utils/QueryOptions';
 import { AcumaticaConfig } from '../types';
 
 /**
- * AcumaticaAPI class for interacting with the Acumatica REST API.
+ * An axios wrapper specifically for the Acumatica ERP API.
  *
- * This class provides methods for authentication, CRUD operations,
- * generic inquiries, and file operations. It handles session management
- * (by storing cookies) and abstracts over the REST endpoints for ease of use.
+ * Encapsulates Acumatica API Endpoints into simple asynchronous methods, making *Acumatica Easy*.
  *
- * @class
  * @example
- * const AcumaticaAPI = require('node-acumatica');
- * const api = new AcumaticaAPI(
- *   baseUrl: 'https://your-instance.example.com',
- *   username: 'admin',
- *   password: 'password',
- *   tenant: 'MyCompany',
- *   branch: 'MAIN'
- * );
+ * ## Basic Usage
+ * ### Manual Login/Logout
+ * ```ts
+ * import { AcumaticaClient, QueryOptions, QueryOptionsConfig } from 'easy-acumatica';
+ * import { AxiosResponse } from 'axios';
+ * 
+ * async function callAPI(): void {
+ *    // Create the client and login.
+ *    let client: AcumaticaClient = client = new AcumaticaClient(...);
+ *    await client.login();
+ *    
+ *    // Call the desired endpoint
+ *    const response: AxsiosResponse<any, any> = await client.getFromGenericInquiry("Inquiry Title");
+ * 
+ *    // Logout
+ *    await client.logout();
+ * }
+ * 
+ * await callAPI();
+ * ```
+ * ***
+ * ***
+ * @TODO Add support for Automatic Per-call Login/Logout
+ * @TODO Add support for Per-application Login/Logout
  */
-export class EasyAcumatica {
+export class AcumaticaClient {
   private full_config: AcumaticaConfig;
 
   private auth: {
@@ -182,14 +195,13 @@ export class EasyAcumatica {
    * });
    * 
    * // Make the API Call
-   * const response: AxiosResponse = await client.getFromGenericInquiry("Inquiry Title", options, (inquiry_title: string, config: AcumaticaConfig) => {
+   * const response: AxiosResponse<any, any> = await client.getFromGenericInquiry("Inquiry Title", options, (inquiry_title: string, config: AcumaticaConfig) => {
    *    return `${config.base_url}/gi/${inquiry_title}`;
    * });
    * 
    * // Display the data
    * console.log(response.data);
    * ```
-   * 
    * ***
    * ***
    * @remarks
