@@ -21,7 +21,7 @@ Hosted in npm's package registry, so you and your team will always have the late
 https://www.npmjs.com/package/easy-acumatica
 
 ## Python Edition
-Need Easy-Acuamtica in Python, check out our sister package.
+Need Easy-Acuamtica in Python? Check out our sister package.
 
 https://github.com/nioron07/Easy-Acumatica
 
