@@ -12,7 +12,7 @@ export class MathBuilder {
 
     // }
 
-    // public static cieling(expr: string): string {
+    // public static ceiling(expr: string): string {
 
     // }
 }

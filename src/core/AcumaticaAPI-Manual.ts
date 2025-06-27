@@ -1,7 +1,12 @@
+// Default Imports
+import path from 'path';
+
+// Third Party Imports
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { QueryOptions } from '../utils/QueryOptions';
+// Local Importspath.join
 import { AcumaticaConfig } from '../types';
+import { QueryOptions } from '../utils/QueryOptions';
 
 /**
  * An axios wrapper specifically for the Acumatica ERP API.
@@ -58,6 +63,7 @@ export class AcumaticaClient {
 
   private gi_url: string;
   
+  private method_to_call;
 
   /**
    * Creates an instance of AcumaticaAPI.
@@ -97,8 +103,13 @@ export class AcumaticaClient {
     };
 
     this.gi_url = create_gi_url !== undefined ? create_gi_url(this.full_config) : `${this.full_config.base_url}/t/${this.full_config.tenant}/api/odata/gi/`;
+
+    this.method_to_call = undefined;
   }
 
+  // ---------------------------- ---------------------------- Private Static Helper Methods ---------------------------- ---------------------------- \\
+
+  // ---------------------------- ---------------------------- Session Methods ---------------------------- ---------------------------- \\
   /**
    * @async
    * 
@@ -177,13 +188,208 @@ export class AcumaticaClient {
     }
   }
 
+  // ---------------------------- ---------------------------- HTTP Methods ---------------------------- ---------------------------- \\
+  async get(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+    if (url === undefined) {
+      this.method_to_call = axios.get;
+      return this;
+    }
+    
+    if (url instanceof URL) url = url.href;
+    
+    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+
+    url = odata_options.build(url);
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth
+      };
+
+      return await axios.get(url, config);
+    } catch (error: any) {
+      throw error;
+
+    }
+  }
+
+  async post(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+    if (url === undefined) {
+      this.method_to_call = axios.post;
+      return this;
+    }
+    
+    if (url instanceof URL) url = url.href;
+    
+    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+
+    url = odata_options.build(url);
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth
+      };
+
+      return await axios.post(url, config);
+    } catch (error: any) {
+      throw error;
+
+    }
+  }
+
+  async put(url?: string| URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+    if (url === undefined) {
+      this.method_to_call = axios.put;
+      return this;
+    }
+    
+    if (url instanceof URL) url = url.href;
+    
+    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+
+    url = odata_options.build(url);
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth
+      };
+
+      return await axios.put(url, config);
+    } catch (error: any) {
+      throw error;
+
+    }
+  }
+
+  async patch(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+    if (url === undefined) {
+      this.method_to_call = axios.patch;
+      return this;
+    }
+    
+    if (url instanceof URL) url = url.href;
+    
+    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+
+    url = odata_options.build(url);
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth
+      };
+
+      return await axios.patch(url, config);
+    } catch (error: any) {
+      throw error;
+
+    }
+  }
+
+  async delete(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+    if (url === undefined) {
+      this.method_to_call = axios.delete;
+      return this;
+    }
+    
+    if (url instanceof URL) url = url.href;
+    
+    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+
+    url = odata_options.build(url);
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth
+      };
+
+      return await axios.delete(url, config);
+    } catch (error: any) {
+      throw error;
+
+    }
+  }
+
+  async head(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+    if (url === undefined) {
+      this.method_to_call = axios.head;
+      return this;
+    }
+    
+    if (url instanceof URL) url = url.href;
+    
+    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+
+    url = odata_options.build(url);
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth
+      };
+
+      return await axios.head(url, config);
+    } catch (error: any) {
+      throw error;
+
+    }
+  }
+
+  async options(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+    if (url === undefined) {
+      this.method_to_call = axios.options;
+      return this;
+    }
+    
+    if (url instanceof URL) url = url.href;
+    
+    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+
+    url = odata_options.build(url);
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth
+      };
+
+      return await axios.options(url, config);
+    } catch (error: any) {
+      throw error;
+
+    }
+  }
+
+  async customers(version: string, odata_options?: QueryOptions, json_data?: object): Promise<AxiosResponse<any>> {
+    let url: string = _http_join(this.full_config.base_url, "entity/Default", version, "Customer");
+    url = odata_options !== undefined ? odata_options.build(url) : url;
+    
+    try {
+      const config: AxiosRequestConfig<any> = {
+        ...this.config,
+        auth: this.basic_auth,
+        data: json_data
+      };
+
+      return await this.method_to_call(url, config);
+    } catch (error: any) {
+      throw error;
+    } 
+
+    return;
+  }
+
   /**
    * @async
    * 
    * Function to abstract calls to Acumatica's Generic Inquiries (GIs).
    * 
    * @param { string } inquiry_title `string` The name of the GI we are getting data from. These can be found our Acumatica Tenant Site.
-   * @param { QueryOptions } odata_parameters `QueryOptions` (Optional) The OData query parameter object.
+   * @param { QueryOptions } odata_options `QueryOptions` (Optional) The OData query parameter object.
    * @param { function } create_gi_url `function` (Optional) A function that creates the Generic Inquiry URL. Include the Inquiry Name. Not all parameters in `@config` need to be used.
    * @returns `Promise<AxiosResponse<any, any>>` The full response object from Acumatica.
    * 
@@ -213,9 +419,9 @@ export class AcumaticaClient {
    *
    * But, the `Inquiry Title` field is the inquiry title you need to pass into `@inquiry_title`.
    */
-   async getFromGenericInquiry(inquiry_title: string, odata_parameters?: QueryOptions, create_gi_url?: (inquiry_title: string, config: AcumaticaConfig) => string): Promise<AxiosResponse<any, any>> {
+   async getFromGenericInquiry(inquiry_title: string, odata_options?: QueryOptions, create_gi_url?: (inquiry_title: string, config: AcumaticaConfig) => string): Promise<AxiosResponse<any, any>> {
     let url: string = create_gi_url !== undefined ? create_gi_url(inquiry_title, this.full_config) : `${this.gi_url}${inquiry_title}`;
-    url = odata_parameters ? odata_parameters.build(url) : url;
+    url = odata_options ? odata_options.build(url) : url;
 
     try {
       const config: AxiosRequestConfig<any> = {
@@ -229,4 +435,14 @@ export class AcumaticaClient {
       throw error;
     }
   }
+}
+
+/**
+ * Helper function to handle url joining.
+ * 
+ * @param { string[] } parts `string[]` The url parts. 
+ * @returns { string } `string` The cleanly joined string.
+ */
+function _http_join(...parts: string[]): string {
+  return '/' + parts.filter(Boolean).map(part => part.replace(/^\/+|\/+$/g, '')).join('/');
 }

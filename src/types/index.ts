@@ -1,1 +1,1 @@
-export * from './api_types';
+export * from './config_types';
