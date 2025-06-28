@@ -2,7 +2,7 @@
 import path from 'path';
 
 // Third Party Imports
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { Axios, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // Local Importspath.join
 import { AcumaticaConfig } from '../types';
@@ -40,6 +40,8 @@ import { QueryOptions } from '../utils/QueryOptions';
  * @TODO Add support for Per-application Login/Logout
  */
 export class AcumaticaClient {
+  // ---------------------------- ---------------------------- Member Variables ---------------------------- ---------------------------- \\
+  // ---------------------------- HTTP/Axios Config ---------------------------- \\ 
   private full_config: AcumaticaConfig;
 
   private auth: {
@@ -61,10 +63,12 @@ export class AcumaticaClient {
     [key: string]: any;
   };
 
+  // ---------------------------- ---------------------------- \\
   private gi_url: string;
   
   private method_to_call;
 
+  // ---------------------------- ---------------------------- Class Methods ---------------------------- ---------------------------- \\
   /**
    * Creates an instance of AcumaticaAPI.
    *
@@ -107,9 +111,9 @@ export class AcumaticaClient {
     this.method_to_call = undefined;
   }
 
-  // ---------------------------- ---------------------------- Private Static Helper Methods ---------------------------- ---------------------------- \\
+  // ---------------------------- Private Static Helper Methods ---------------------------- \\
 
-  // ---------------------------- ---------------------------- Session Methods ---------------------------- ---------------------------- \\
+  // ---------------------------- Session Methods ---------------------------- \\
   /**
    * @async
    * 
@@ -188,7 +192,11 @@ export class AcumaticaClient {
     }
   }
 
-  // ---------------------------- ---------------------------- HTTP Methods ---------------------------- ---------------------------- \\
+  // ---------------------------- ---------------------------- API Methods ---------------------------- ---------------------------- \\
+
+  // ---------------------------- HTTP Methods ---------------------------- \\
+  async get(): Promise<AcumaticaClient>;
+  async get(url: string | URL, odata_options: QueryOptions): Promise<AxiosResponse<any, any>>;
   async get(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
     if (url === undefined) {
       this.method_to_call = axios.get;
@@ -197,7 +205,7 @@ export class AcumaticaClient {
     
     if (url instanceof URL) url = url.href;
     
-    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+    if (!url.startsWith(this.full_config.base_url)) url = http_join(this.full_config.base_url, url);
 
     url = odata_options.build(url);
 
@@ -214,7 +222,9 @@ export class AcumaticaClient {
     }
   }
 
-  async post(url?: string | URL, odata_options?: QueryOptions): Promise<AcumaticaClient | AxiosResponse<any, any>> {
+  async post(): Promise<AcumaticaClient>;
+  async post(url: string | URL, odata_options: QueryOptions, data: Record<string, any>): Promise<AxiosResponse<any, any>>;
+  async post(url?: string | URL, odata_options?: QueryOptions, data?: Record<string, any>): Promise<AcumaticaClient | AxiosResponse<any, any>> {
     if (url === undefined) {
       this.method_to_call = axios.post;
       return this;
@@ -222,7 +232,7 @@ export class AcumaticaClient {
     
     if (url instanceof URL) url = url.href;
     
-    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+    if (!url.startsWith(this.full_config.base_url)) url = http_join(this.full_config.base_url, url);
 
     url = odata_options.build(url);
 
@@ -232,7 +242,7 @@ export class AcumaticaClient {
         auth: this.basic_auth
       };
 
-      return await axios.post(url, config);
+      return await axios.post(url, data, config);
     } catch (error: any) {
       throw error;
 
@@ -247,7 +257,7 @@ export class AcumaticaClient {
     
     if (url instanceof URL) url = url.href;
     
-    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+    if (!url.startsWith(this.full_config.base_url)) url = http_join(this.full_config.base_url, url);
 
     url = odata_options.build(url);
 
@@ -272,7 +282,7 @@ export class AcumaticaClient {
     
     if (url instanceof URL) url = url.href;
     
-    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+    if (!url.startsWith(this.full_config.base_url)) url = http_join(this.full_config.base_url, url);
 
     url = odata_options.build(url);
 
@@ -297,7 +307,7 @@ export class AcumaticaClient {
     
     if (url instanceof URL) url = url.href;
     
-    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+    if (!url.startsWith(this.full_config.base_url)) url = http_join(this.full_config.base_url, url);
 
     url = odata_options.build(url);
 
@@ -322,7 +332,7 @@ export class AcumaticaClient {
     
     if (url instanceof URL) url = url.href;
     
-    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+    if (!url.startsWith(this.full_config.base_url)) url = http_join(this.full_config.base_url, url);
 
     url = odata_options.build(url);
 
@@ -347,7 +357,7 @@ export class AcumaticaClient {
     
     if (url instanceof URL) url = url.href;
     
-    if (!url.startsWith(this.full_config.base_url)) url = _http_join(this.full_config.base_url, url);
+    if (!url.startsWith(this.full_config.base_url)) url = http_join(this.full_config.base_url, url);
 
     url = odata_options.build(url);
 
@@ -364,8 +374,10 @@ export class AcumaticaClient {
     }
   }
 
-  async customers(version: string, odata_options?: QueryOptions, json_data?: object): Promise<AxiosResponse<any>> {
-    let url: string = _http_join(this.full_config.base_url, "entity/Default", version, "Customer");
+  // ---------------------------- Acumatica Endpoints ---------------------------- \\
+
+  async customers(version: string, odata_options?: QueryOptions, json_data?: Record<string, any>): Promise<AxiosResponse<any>> {
+    let url: string = http_join(this.full_config.base_url, "entity/Default", version, "Customer");
     url = odata_options !== undefined ? odata_options.build(url) : url;
     
     try {
@@ -379,8 +391,6 @@ export class AcumaticaClient {
     } catch (error: any) {
       throw error;
     } 
-
-    return;
   }
 
   /**
@@ -435,6 +445,26 @@ export class AcumaticaClient {
       throw error;
     }
   }
+
+  // ---------------------------- Axios Wrapper ---------------------------- \\
+  private async _call_api(method: "get" | "post" | "put" | "patch" | "delete" | "head" | "options", url: string, odata_options?: QueryOptions, data?: Record<string, any>): Promise<AxiosResponse<any, any>> {
+    url = odata_options !== undefined ? odata_options.build(url) : url;
+
+    try {
+      const config: AxiosRequestConfig<any> = {
+        method: method,
+        url: url,
+        data: data,
+        ...this.config,
+        auth: this.basic_auth
+      };
+      
+      return await axios(config);
+
+    } catch (err) {
+
+    }
+  }
 }
 
 /**
@@ -443,6 +473,6 @@ export class AcumaticaClient {
  * @param { string[] } parts `string[]` The url parts. 
  * @returns { string } `string` The cleanly joined string.
  */
-function _http_join(...parts: string[]): string {
+function http_join(...parts: string[]): string {
   return '/' + parts.filter(Boolean).map(part => part.replace(/^\/+|\/+$/g, '')).join('/');
 }
