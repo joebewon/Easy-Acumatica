@@ -2,13 +2,13 @@ import { MathBuilder } from "./MathBuilder";
 import { StringBuilder } from "./StringBuilder";
 
 export class Filter {
-    public expr: string;
+    #expr: string;
 
     constructor(expression) {
-        this.expr = expression;
+        this.#expr = expression;
     }
     toString(): string {
-        return this.expr;
+        return this.#expr;
     }
 
     // -------------------- -------------------- Comparison Operators -------------------- -------------------- \\
@@ -43,15 +43,15 @@ export class Filter {
     // -------------------- -------------------- Logic Operators -------------------- -------------------- \\
 
     public and(other: Filter): Filter {
-        return new Filter(`(${this.expr} and ${other.expr})`);
+        return new Filter(`(${this.#expr} and ${other.#expr})`);
     }
     
     public or(other: Filter): Filter {
-        return new Filter(`(${this.expr} or ${other.expr})`);
+        return new Filter(`(${this.#expr} or ${other.#expr})`);
     }
     
     static not(other: Filter): Filter {
-        return new Filter(`not (${other.expr})`);
+        return new Filter(`not (${other.#expr})`);
     }
     
     // -------------------- -------------------- String Functions -------------------- -------------------- \\

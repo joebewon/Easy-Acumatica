@@ -1,2 +1,2 @@
-export * from './AcumaticaAPI-Manual';
+export * from './AcumaticaClient';
 // export * from './AcumaticaAPI-Auto.cts';
