@@ -1,18 +1,16 @@
 /**
- * @TODO - NOT IMPLEMENTED
- * 
- * A class to allow the easy creation of OData Arithmatic Expressions
+ * A non instantiable class meant to allow calls to OData Math Functions
  */
 export class MathBuilder {
-    // public static round(expr: string): string {
+    public static round(expr: string): string {
+        return `round(${expr})`;
+    }
 
-    // }
+    public static floor(expr: string): string {
+        return `floor(${expr})`;
+    }
 
-    // public static floor(expr: string): string {
-
-    // }
-
-    // public static ceiling(expr: string): string {
-
-    // }
+    public static ceil(expr: string): string {
+        return `ceiling(${expr})`;
+    }
 }

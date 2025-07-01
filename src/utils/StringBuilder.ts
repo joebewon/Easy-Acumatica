@@ -4,15 +4,23 @@
  * A class to allow the easy creation of OData String Manipulation Expressions
  */
 export class StringBuilder {
-    // public static round(expr: string): string {
+    // -------------------- -------------------- String Functions -------------------- -------------------- \\
+    public static substringOf(field: string, search_string: string | StringBuilder): string {
+        return `substringof(${StringBuilder.lint_string(search_string)}, ${field})`;
+    }
 
-    // }
+    public static startsWith(field: string, prefix: string | StringBuilder): string {
+        return `startswith(${field}, ${StringBuilder.lint_string(prefix)})`;
+    }
+    
+    public static endsWith(field: string, suffix: string | StringBuilder): string {
+        return `endswith(${field}, ${StringBuilder.lint_string(suffix)})`;
+    }
 
-    // public static floor(expr: string): string {
-
-    // }
-
-    // public static cieling(expr: string): string {
-
-    // }
+    // -------------------- -------------------- Private Helper Functions -------------------- -------------------- \\
+    private static lint_string(val: any): string {
+        if (typeof val !== "string" || val.startsWith("datetimeoffset") || val.startsWith("guid") || val.startsWith("cf.")) return val
+        
+        return `'${val.replaceAll("'", "\\'").replace('"', '\\"')}'`;
+    }
 }
