@@ -16,7 +16,7 @@ import { QueryOptionsConfig } from "../types";
  * @param { number } $skip `number` (Optional) The number of rows to skip before getting data. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=be37b0cb-eb17-41c0-944c-d52f7a65cf2e Acumatica Docs for $skip}.
  * @param { string | string[] } $expand `string | string[]` (Optional) The list of linked and detail entities to expand. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=b6c2fecd-0b2e-4aba-9bad-4c5050befe25 Acumatica Docs for $expand}.
  * @param { string | string[] } $select `string | string[]` (Optional) The list of fields to return. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=ecbfdb12-4853-4ff5-b8c5-eade02f9b47b Acumatica Docs for $select}.
- * @param { string | [string, "asc" | "desc"] } $orderby `string | [string, "asc" | "desc"]` (Optional) The field to order by. The Acumatica Devs seemed to missed this option when writing their docs. {@link https://www.odata.org/getting-started/basic-tutorial/#orderby OData Docs for $orderby}.
+ * @param { string | [string, "asc" | "desc"][] } $orderby `string | [string, "asc" | "desc"][]` (Optional) The fields to order by. The Acumatica Devs seemed to missed this option when writing their docs. {@link https://www.odata.org/getting-started/basic-tutorial/#orderby OData Docs for $orderby}.
  */
 export class QueryOptions {
     #_params: {
@@ -47,7 +47,7 @@ export class QueryOptions {
             $skip: options.$skip,
             $expand: typeof options.$expand === "string" ? options.$expand : options.$expand?.join(','),
             $select: typeof options.$select === "string" ? options.$select : options.$select?.join(','),
-            $orderby: typeof options.$orderby === "string" ? typeof options.$orderby : options.$orderby?.join(' ')
+            $orderby: typeof options.$orderby === "string" ? options.$orderby : options.$orderby?.map((item) => item.join(' ')).join(',')
         };
     }
 
@@ -106,11 +106,11 @@ export class QueryOptions {
      * Functionality:
      * - If a string is passed, it will be used as the filter string. 
      * - If a `Filter` object is passed, it will be converted to a string using its `toString()` method.
-     * - If `undefined` is passed, the `$filter` parameter will be cleared.
+     * - If `undefined` is passed (allows implicit passing of `undefined`), the `$filter` parameter will be cleared.
      * 
      * @param { string | Filter | undefined } flt `string | Filter | undefined` A Filter object defining the OData filter parameter or the filter string itself. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=f279ec05-2f71-4376-a76f-d3ed0e0e2556 Acumatica Docs for $filter}.
      */
-    public setFilter(flt: string | Filter): void {
+    public setFilter(flt?: string | Filter | undefined): void {
         this.#_params.$filter = flt === undefined ? undefined : flt.toString();
     }
 
@@ -137,12 +137,12 @@ export class QueryOptions {
      * 
      * Functionality:
      * - If a number is passed, it will be used as the value for the `$top` parameter.
-     * - If `undefined` is passed, the `$top` parameter will be cleared.
+     * - If `undefined` is passed (allows implicit passing of `undefined`), the `$top` parameter will be cleared.
      * 
      * @param { number | undefined } n `number | undefined` How many entries to return. Viz. only the first `@n` entries will be returned. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=12ecc8c7-b0c0-4f26-bfe5-388be9674374 Acumatica Docs for $top}.
      * @throws `TypeError` When `@n` is not an integer.
      */
-    public setTop(n: number | undefined): void {
+    public setTop(n?: number | undefined): void {
         if (!Number.isInteger(n)) {
             throw new TypeError("Expected @n to be an integer.");
         }
@@ -173,12 +173,12 @@ export class QueryOptions {
      * 
      * Functionality:
      * - If a number is passed, it will be used as the value for the `$skip` parameter.
-     * - If `undefined` is passed, the `$skip` parameter will be cleared.
+     * - If `undefined` is passed (allows implicit passing of `undefined`), the `$skip` parameter will be cleared.
      * 
      * @param { number | undefined } n `number | undefined` The number of rows to skip before getting data. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=be37b0cb-eb17-41c0-944c-d52f7a65cf2e Acumatica Docs for $skip}.
      * @throws `TypeError` When `@n` is not an integer.
      */
-    public setSkip(n: number | undefined): void {
+    public setSkip(n?: number | undefined): void {
         if (!Number.isInteger(n)) {
             throw new TypeError("Expected @n to be an integer.");
         }
@@ -210,11 +210,11 @@ export class QueryOptions {
      * Functionality:
      * - If a string is passed, it will be used as the value for the `$expand` parameter.
      * - If an array of strings is passed, it will be joined with commas and used as the value for the `$expand` parameter.
-     * - If `undefined` is passed, the `$expand` parameter will be cleared.
+     * - If `undefined` is passed (allows implicit passing of `undefined`), the `$expand` parameter will be cleared.
      * 
      * @param { string | string[] | undefined } list `string | string[] | undefined` The list of linked and detail entities to expand. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=b6c2fecd-0b2e-4aba-9bad-4c5050befe25 Acumatica Docs for $expand}.
      */
-    public setExpand(list: string | string[] | undefined): void  {
+    public setExpand(list?: string | string[] | undefined): void  {
         if (list === undefined) {
             this.#_params.$expand = undefined;
             return;
@@ -248,11 +248,11 @@ export class QueryOptions {
      * Functionality:
      * - If a string is passed, it will be used as the value for the `$select` parameter.
      * - If an array of strings is passed, it will be joined with commas and used as the value for the `$select` parameter.
-     * - If `undefined` is passed, the `$select` parameter will be cleared.
+     * - If `undefined` is passed (allows implicit passing of `undefined`), the `$select` parameter will be cleared.
      * 
      * @param { string | string[] | undefined } list `string | string[] | undefined` The list of fields to return. {@link https://help.acumatica.com/(W(5))/Help?ScreenId=ShowWiki&pageid=ecbfdb12-4853-4ff5-b8c5-eade02f9b47b Acumatica Docs for $select}.
      */    
-    public setSelect(list: string | string[] | undefined): void  {
+    public setSelect(list?: string | string[] | undefined): void  {
         if (list === undefined) {
             this.#_params.$select = undefined;
             return;
@@ -275,18 +275,18 @@ export class QueryOptions {
      * 
      * Functionality:
      * - If a string is passed, it will be used as the value for the `$orderby` parameter.
-     * - If an array of two elements is passed, the first element will be used as the field to order by and the second element will be used as the sort direction ("asc" or "desc").
-     * - If `undefined` is passed, the `$orderby` parameter will be cleared.
+     * - If an array of arrays of two elements are passed, the first element will be used as the field to order by and the second element will be used as the sort direction ("asc" or "desc").
+     * - If `undefined` is passed (allows implicit passing of `undefined`), the `$orderby` parameter will be cleared.
      * 
-     * @param { string | [string, "asc" | "desc"] } sort `string | [string, "asc" | "desc"]` The field to order by. The Acumatica Devs seemed to missed this option when writing their docs. {@link https://www.odata.org/getting-started/basic-tutorial/#orderby OData Docs for $orderby}.
+     * @param { string | [string, "asc" | "desc"][] } sort `string | [string, "asc" | "desc"]` The field to order by. The Acumatica Devs seemed to missed this option when writing their docs. {@link https://www.odata.org/getting-started/basic-tutorial/#orderby OData Docs for $orderby}.
      */
-    public setOrderby(sort: string | [string, "asc" | "desc"] | undefined): void {
+    public setOrderby(sort?: string | [string, "asc" | "desc"][] | undefined): void {
         if (sort === undefined) {
             this.#_params.$orderby = undefined;
             return;
         }
 
-        this.#_params.$orderby = typeof sort === "string" ? sort : sort.join(' ');
+        this.#_params.$orderby = typeof sort === "string" ? sort : sort.map((item) => item.join(" ")).join(',');
     }
 
     /**
