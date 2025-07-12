@@ -13,4 +13,8 @@ export class FieldFactory {
         return this;
     }
 
+    toString(): string {
+        return this.#expr;
+    }
+
 }
