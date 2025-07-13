@@ -1,5 +1,5 @@
 import { DateBuilder } from "./DateBuilder";
-import { FieldFactory } from "./FieldFactory";
+import { AnyFieldFactory } from "./Field";
 import { MathBuilder } from "./MathBuilder";
 import { StringBuilder } from "./StringBuilder";
 
@@ -12,6 +12,23 @@ export class Filter {
     /**
      * The Main Filter Creator.
      * 
+     * @precondition ALL operators (except `!`) MUST be surrounded by two whitespaces. This is a necessity to keep everything consitant internally.
+     * 
+     * @param { string } expression `string` The main filter expression. Everything funnels into this expression.
+     * @param { (string | number | Date)[] } values `(string | number | Date)[]` (Optional) A parameterized array of values to filter for.
+     * @param { (string | AnyFieldFactory)[] } fields `(string | FieldFactory)[]` (Optional) A paramerterized array of fields to filter in.\
+     * @example
+     * ```ts
+     * // flt.toString() returns: `Field1 == 'A String Value' && (day(Field2) > 0 || Field2 != '2025-07-12T23:32:33.495Z')`
+     * const flt: Filter = new Filter(
+     *      '$f1 == $v1 && ($f2 > $v2 || $f3 != $v3)'
+     *      ["A String Value", 0, new Date('2025-07-12T23:32:33.495Z')],
+     *      ["Field1", Filter.field("Field2").day(), "Field2"]
+     * );
+     * ```
+     * ***
+     * ***
+     * # The Filter Class
      * ## Standard Notation to OData Syntax Conversion
      * Given the contraints of urls, the creators of the OData standard had to deviate away from standard logical and mathmatical notation.
      * 
@@ -38,6 +55,11 @@ export class Filter {
      * 
      * @precondition To use these, ALL operators (except `!`) MUST be surrounded by two whitespaces. This is a necessity to keep everything consitant internally.
      * 
+     * In the case of the `!` operator, a single white space must preceed it, and it must be directly up against the predicate it is negating.
+     * 
+     * @example
+     * ```
+     * ```
      * ***
      * ***
      * ## Parameterization
@@ -50,22 +72,26 @@ export class Filter {
      * 
      * @example
      * ```ts
-     * // flt.toString() returns 'Field1 == 'A String Value' && day(Field2) > 0 || Field2 != $v3'
+     * // flt.toString() returns: `Field1 == 'A String Value' && (day(Field2) > 0 || Field2 != '2025-07-12T23:32:33.495Z')`
      * const flt: Filter = new Filter(
-     *      '$f1 == $v1 && $f2 > $v2 || $f3 != $v3'
+     *      '$f1 == $v1 && ($f2 > $v2 || $f3 != $v3)'
      *      ["A String Value", 0, new Date('2025-07-12T23:32:33.495Z')],
      *      ["Field1", Filter.field("Field2").day(), "Field2"]
      * );
-     * 
-     * 
      * ```
-     * ***
-     * ***
-     * @param { string } expression `string` The main filter expression. Everything funnels into this expression.
-     * @param { (string | number | Date)[] } values `(string | number | Date)[]` (Optional) A parameterized array of values to filter for.
-     * @param { (string | FieldFactory)[] } fields `(string | FieldFactory)[]` (Optional) A paramerterized array of fields to filter in.
+     * 
+     * However, if only one of arrays is passed in, you may omit the letter identifier. This works regardles of which array is given and which is not.
+     * 
+     * @example
+     * ```ts
+     * // flt.toString() returns: `Field1 == 'A String Value' && (day(Field2) > 0 || Field2 != '2025-07-12T23:32:33.495Z')`
+     * const flt: Filter = new Filter(
+     *      'Field1 == $1 && (day(Field2) > $2 || Field2 != $3)',
+     *      ["A String Value", 0, new Date('2025-07-12T23:32:33.495Z')]
+     * );
+     * ```
      */
-    constructor(expression: string, values?: (string | number | Date)[], fields?: (string | FieldFactory)[]) {
+    constructor(expression: string, values?: (string | number | Date)[], fields?: (string | AnyFieldFactory)[]) {
         // Comparison Operators
         this.#expr = expression
             .replaceAll(' <= ', ' le ')
@@ -99,12 +125,12 @@ export class Filter {
     }
 
     // -------------------- -------------------- Functions -------------------- -------------------- \\
-    static field(field: string): FieldFactory {
-        return new FieldFactory(field);
+    static field(field: string): AnyFieldFactory {
+        return new AnyFieldFactory(field);
     }
 
-    static customField(): FieldFactory {
-        return new FieldFactory("");
+    static customField(): AnyFieldFactory {
+        return new AnyFieldFactory("");
     }
 }
 

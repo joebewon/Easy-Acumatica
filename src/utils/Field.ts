@@ -1,6 +1,6 @@
 import type { Filter } from './Filter'
 
-export class FieldFactory {
+export class AnyFieldFactory {
     #expr: string;
 
     constructor(field_name: string) {
@@ -16,5 +16,21 @@ export class FieldFactory {
     toString(): string {
         return this.#expr;
     }
+
+}
+
+export class BooleanFieldFactory {
+
+}
+
+export class NumberFieldFactory {
+
+}
+
+export class StringFieldFactory {
+
+}
+
+export class DateTimeFieldFactory {
 
 }
