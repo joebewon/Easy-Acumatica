@@ -5,16 +5,14 @@ import { NumberFieldFactory, AnyFieldFactory, StringFieldFactory } from "./Field
  */
 export class MathBuilder {
     public static round(expr: string | NumberFieldFactory): NumberFieldFactory {
-        return `round(${expr})`;
+        return new NumberFieldFactory(`round(${expr})`);
     }
 
     public static floor(expr: string | NumberFieldFactory): NumberFieldFactory {
-        return `floor(${expr})`;
+        return new NumberFieldFactory(`floor(${expr})`);
     }
 
     public static ceil(expr: string | AnyFieldFactory | NumberFieldFactory): NumberFieldFactory {
-        return `ceiling(${expr})`;
+        return new NumberFieldFactory(`ceiling(${expr})`);
     }
 }
-
-MathBuilder.ceil(new StringFieldFactory(""))

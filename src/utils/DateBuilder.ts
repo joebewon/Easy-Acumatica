@@ -43,9 +43,9 @@ export class DateBuilder {
      * @param { string } field `string` The desired Field as a string literal
      * @returns { string } `NumberFieldFactory` The OData day function
      */
-    public static day(field: string): string;
+    public static day(field: string): NumberFieldFactory;
     public static day(field: string | AnyFieldFactory | DateTimeFieldFactory): NumberFieldFactory {
-        return `day(${field})`
+        return new NumberFieldFactory(`day(${field})`);
     }
 
     // ------------------------------------------ \\

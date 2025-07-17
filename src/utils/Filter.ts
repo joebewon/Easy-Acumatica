@@ -134,6 +134,6 @@ export class Filter {
     }
 }
 
-const flt: Filter = new Filter(`${Filter.field("InventoryID").subField("Qty")} + 5 == ${Filter.date.day()}`);
+const flt: Filter = new Filter(`${Filter.field("InventoryID").subField("Qty")} + 5 == ${Filter.date.day("")}`);
 
 console.log(flt.toString());

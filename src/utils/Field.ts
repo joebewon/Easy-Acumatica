@@ -1,6 +1,4 @@
-import type { Filter } from './Filter'
-
-export class AnyFieldFactory {
+export class FieldFactory {
     #expr: string;
 
     constructor(field_name: string) {
@@ -16,21 +14,89 @@ export class AnyFieldFactory {
     toString(): string {
         return this.#expr;
     }
-
 }
 
-export class BooleanFieldFactory {
-
+export class AnyFieldFactory extends FieldFactory {
+    /**
+     * @readonly
+     * 
+     * Branding Variable
+     * 
+     * Used by TypeScript to prevent coersion to any of its sibling classes at compile time.
+     * 
+     * When transcompiled to JavaScript, functions will prevent coersion at runtime via `instanceof`, throwing a `TypeError`. See each function for details.
+     */
+    readonly __type: 'any' = 'any';
+    
+    constructor(field_name: string) {
+        super(field_name);
+    }
 }
 
-export class NumberFieldFactory {
-
+export class BooleanFieldFactory extends FieldFactory {
+    /**
+     * @readonly
+     * 
+     * Branding Variable
+     * 
+     * Used by TypeScript to prevent coersion to any of its sibling classes at compile time.
+     * 
+     * When transcompiled to JavaScript, functions will prevent coersion at runtime via `instanceof`, throwing a `TypeError`. See each function for details.
+     */
+    readonly __type: 'boolean' = 'boolean';
+    
+    constructor(field_name: string) {
+        super(field_name);
+    }
 }
 
-export class StringFieldFactory {
-
+export class NumberFieldFactory extends FieldFactory {
+    /**
+     * @readonly
+     * 
+     * Branding Variable
+     * 
+     * Used by TypeScript to prevent coersion to any of its sibling classes at compile time.
+     * 
+     * When transcompiled to JavaScript, functions will prevent coersion at runtime via `instanceof`, throwing a `TypeError`. See each function for details.
+     */
+    readonly __type: 'number' = 'number';
+    
+    constructor(field_name: string) {
+        super(field_name);
+    }
 }
 
-export class DateTimeFieldFactory {
+export class StringFieldFactory extends FieldFactory {
+    /**
+     * @readonly
+     * 
+     * Branding Variable
+     * 
+     * Used by TypeScript to prevent coersion to any of its sibling classes at compile time.
+     * 
+     * When transcompiled to JavaScript, functions will prevent coersion at runtime via `instanceof`, throwing a `TypeError`. See each function for details.
+     */    
+    readonly __type: 'string' = 'string';
+    
+    constructor(field_name: string) {
+        super(field_name);
+    }
+}
 
+export class DateTimeFieldFactory extends FieldFactory {
+    /**
+     * @readonly
+     * 
+     * Branding Variable
+     * 
+     * Used by TypeScript to prevent coersion to any of its sibling classes at compile time.
+     * 
+     * When transcompiled to JavaScript, functions will prevent coersion at runtime via `instanceof`, throwing a `TypeError`. See each function for details.
+     */    
+    readonly __type: 'datetime' = 'datetime';
+    
+    constructor(field_name: string) {
+        super(field_name);
+    }
 }
