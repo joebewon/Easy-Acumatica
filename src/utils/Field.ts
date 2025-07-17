@@ -84,7 +84,7 @@ export class StringFieldFactory extends FieldFactory {
     }
 }
 
-export class DateTimeFieldFactory extends FieldFactory {
+export class DateFieldFactory extends FieldFactory {
     /**
      * @readonly
      * 

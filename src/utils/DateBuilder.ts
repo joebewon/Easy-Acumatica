@@ -1,4 +1,4 @@
-import { DateTimeFieldFactory, AnyFieldFactory, NumberFieldFactory } from "./Field"
+import { DateFieldFactory, AnyFieldFactory, NumberFieldFactory } from "./Field"
 
 export class DateBuilder {
 
@@ -19,10 +19,10 @@ export class DateBuilder {
      * Then `day(BirthDate)` would return 25, in this case.
      * ***
      * ***
-     * @param { AnyFieldFactory | DateTimeFieldFactory } field `FieldFactory | DateTimeFieldFactory` The desired field as a FieldFactory object
+     * @param { AnyFieldFactory | DateFieldFactory } field `FieldFactory | DateTimeFieldFactory` The desired field as a FieldFactory object
      * @returns { NumberFieldFactory } `NumberFieldFactory` The OData day function
      */
-    public static day(field: AnyFieldFactory | DateTimeFieldFactory): NumberFieldFactory;
+    public static day(field: AnyFieldFactory | DateFieldFactory): NumberFieldFactory;
     /**
      * Abstracts the OData `day` function
      * ***
@@ -44,7 +44,7 @@ export class DateBuilder {
      * @returns { string } `NumberFieldFactory` The OData day function
      */
     public static day(field: string): NumberFieldFactory;
-    public static day(field: string | AnyFieldFactory | DateTimeFieldFactory): NumberFieldFactory {
+    public static day(field: string | AnyFieldFactory | DateFieldFactory): NumberFieldFactory {
         return new NumberFieldFactory(`day(${field})`);
     }
 
