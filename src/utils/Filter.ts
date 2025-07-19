@@ -1,13 +1,13 @@
-import { DateBuilder } from "./DateBuilder";
-import { AnyFieldFactory } from "./Field";
-import { MathBuilder } from "./MathBuilder";
-import { StringBuilder } from "./StringBuilder";
+import { DateExpressionFactory } from "./Factories/DateExpressionFactory";
+import { AnyFieldFactory, FieldFactory } from "./Factories/FieldFactories";
+import { MathExpressionFactory } from "./Factories/MathExpressionFactory";
+import { StringExpressionFactory } from "./Factories/StringExpressionFactory";
 
 export class Filter {
     #expr: string;
-    static date = DateBuilder;
-    static math = MathBuilder;
-    static string = StringBuilder;
+    static date = DateExpressionFactory;
+    static math = MathExpressionFactory;
+    static string = StringExpressionFactory;
 
     /**
      * The Main Filter Creator.
@@ -91,7 +91,7 @@ export class Filter {
      * );
      * ```
      */
-    constructor(expression: string, values?: (string | number | Date)[], fields?: (string | AnyFieldFactory)[]) {
+    constructor(expression: string, values?: (string | number | Date)[], fields?: (string | FieldFactory)[]) {
         // Comparison Operators
         this.#expr = expression
             .replaceAll(' <= ', ' le ')
@@ -115,9 +115,31 @@ export class Filter {
             .replaceAll(' / ', ' div ')
             .replaceAll(' % ', ' mod ');
 
-        // Value replacements
+        // Parameter Replacements - @TODO
+        if (values && fields) {
+            // Errors
+            // - Ambiguous params
+            // - To many value placeholders
+            // - Not enough value placeholders
+            // - To many field placeholders
+            // - Not enough field placeholders
+            
+            
+        } else if (values) {
+            // Errors
+            // - To many placeholders
+            // - Not enough placeholders
+            
+        } else if (fields) {
+            // Errors
+            // - To many placeholders
+            // - Not enough placeholders
+        } else {
+            // Error
+            // - Existence of placeholders
 
-        // Field Replacements
+        }
+
     }
 
     toString(): string {
@@ -125,12 +147,12 @@ export class Filter {
     }
 
     // -------------------- -------------------- Functions -------------------- -------------------- \\
-    static field(field: string): AnyFieldFactory {
-        return new AnyFieldFactory(field);
+    static field(field: string): FieldFactory {
+        return new FieldFactory(field);
     }
 
-    static customField(): AnyFieldFactory {
-        return new AnyFieldFactory("");
+    static customField(): FieldFactory {
+        return new FieldFactory("");
     }
 }
 

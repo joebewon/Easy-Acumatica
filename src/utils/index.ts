@@ -3,6 +3,6 @@
 export * from './Filter';
 export * from './QueryOptions';
 
-export * from './DateBuilder';
+export * from './Factories/DateExpressionFactory';
 // export * from './MathBuilder';
 // export * from './StringBuilder';

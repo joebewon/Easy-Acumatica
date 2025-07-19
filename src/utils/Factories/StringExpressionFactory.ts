@@ -3,18 +3,18 @@
  * 
  * A class to allow the easy creation of OData String Manipulation Expressions
  */
-export class StringBuilder {
+export class StringExpressionFactory {
     // -------------------- -------------------- String Functions -------------------- -------------------- \\
-    public static substringOf(field: string, search_string: string | StringBuilder): string {
-        return `substringof(${StringBuilder.lint_string(search_string)}, ${field})`;
+    public static substringOf(field: string, search_string: string | StringExpressionFactory): string {
+        return `substringof(${StringExpressionFactory.lint_string(search_string)}, ${field})`;
     }
 
-    public static startsWith(field: string, prefix: string | StringBuilder): string {
-        return `startswith(${field}, ${StringBuilder.lint_string(prefix)})`;
+    public static startsWith(field: string, prefix: string | StringExpressionFactory): string {
+        return `startswith(${field}, ${StringExpressionFactory.lint_string(prefix)})`;
     }
     
-    public static endsWith(field: string, suffix: string | StringBuilder): string {
-        return `endswith(${field}, ${StringBuilder.lint_string(suffix)})`;
+    public static endsWith(field: string, suffix: string | StringExpressionFactory): string {
+        return `endswith(${field}, ${StringExpressionFactory.lint_string(suffix)})`;
     }
 
     // -------------------- -------------------- Private Helper Functions -------------------- -------------------- \\
